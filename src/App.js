@@ -31,33 +31,33 @@ const Login = () => {
     <div>
       <h1>Login</h1>
       <div>
-      Login<br /><br />
-      <div>
-        Username<br />
-        <input type="text"/>
+        Login<br /><br />
+        <div>
+          Username<br />
+          <input type="text" />
+        </div>
+        <div>
+          Password<br />
+          <input type="password" />
+        </div>
       </div>
-      <div>
-        Password<br />
-        <input type="password"/>
-      </div>
-    </div>
       <button onClick={handleLogin}>Log in</button>
     </div>
   );
 };
 
 function Nav() {
-  const { authenticate, logout, login } = AuthUser();
+  const { authenticate, logout } = AuthUser();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     navigate("/");
   };
-  const handleLogin = () => {
-    login();
-    navigate("/dashboard");
-  };
+  // const handleLogin = () => {
+  //   login();
+  //   navigate("/dashboard");
+  // };
 
   return (
     <nav>
@@ -74,7 +74,7 @@ function Nav() {
         <li>
           <Link to="/profile">Profile</Link>
         </li>
-       
+
         {/* <li>{!authenticate && <button onClick={handleLogin}>Login</button>}</li> */}
       </ul>
       {authenticate && <button onClick={handleLogout}>Logout</button>}
@@ -98,8 +98,14 @@ export default function App() {
     <div>
       <Nav />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/" element={
+          <RequireAuthentication>
+            <Home />
+          </RequireAuthentication>}/>
+        <Route path="/about" element={
+          <RequireAuthentication>
+            <About />
+          </RequireAuthentication>} />
         <Route
           path="/dashboard"
           element={
